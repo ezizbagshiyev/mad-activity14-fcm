@@ -1,0 +1,4 @@
+{
+  "notification": {"title": "New campus event", "body": "Open the new campus event update"},
+  "data": {"action": "update_ui", "asset": "promo"}
+}

@@ -1,0 +1,72 @@
+In-Class Activity 14: Firebase Cloud Messaging
+Eziz Bagshiyev | CSC 4360 | November 10, 2026
+Repository: https://github.com/ezizbagshiyev/mad-activity14-fcm
+Completion: Android app built, installed, and T1-T4 passed on Pixel 7 emulator.
+
+REFLECTION (three responses)
+
+1. Setup and payload
+The project uses one Android target and the existing Firebase registration so its application identifier matches the generated configuration. Firebase initializes before widgets start, and a top-level background handler is registered. The action string must be update_ui; asset must be default or promo. An allowlist maps these values to bundled images instead of constructing arbitrary paths. T1 changed the initial screen to the campus-event title and promo image.
+
+2. Lifecycle and evidence
+T1 showed onMessage with receipt count 1. Sending while backgrounded and tapping the notification produced onMessageOpenedApp with count 2 in T2. For T3, the app was removed from recents, its process was absent, and a notification tap launched getInitialMessage with a fresh count of 1. The four composites show the handlers and UI. onBackgroundMessage handles separate non-UI work; on Android it may run in another isolate and cannot directly change widget state. Receiving a message and opening its notification are different events.
+
+3. Validation and next step
+T4 sent asset=unknown and a different notification title. The app displayed a rejection diagnostic and updated receipt metadata to onMessage/count 2 while preserving the previous event title and image. A build failure exposed mismatched Java and Kotlin targets; explicitly targeting JVM 17 for both fixed it. Next, application event IDs could prevent duplicate side effects. These observations cover one emulator, not guaranteed delivery on every device. ChatGPT assisted with implementation, testing, and documentation.
+
+DEVICE AND SETUP
+Device: Pixel_7 AVD, emulator-5554, sdk_gphone16k_x86_64.
+OS: Android 17; Google Play services installed.
+Notification permission: authorized (observed on screen).
+Firebase project: eziz-campus-supply-2026-ae07e.
+Android application ID: edu.gsu.eziz.incl12b.
+Packages: firebase_core 4.15.2; firebase_messaging 16.7.1 (pubspec.lock).
+Build runtime: JDK 21; Java and Kotlin bytecode targets: 17.
+Android compile SDK/build tools: 36 / 36.0.0.
+The current installation's token was used for Firebase Console device-only tests.
+Full registration tokens are excluded from these deliverables.
+
+VALID PAYLOAD (conceptual content, not a full HTTP v1 request)
+{
+  "notification": {
+    "title": "New campus event",
+    "body": "Open the new campus event update"
+  },
+  "data": {"action": "update_ui", "asset": "promo"}
+}
+
+T4 variant: action=update_ui, asset=unknown; title="Invalid update",
+body="Unsupported asset test". The changed title makes preservation observable.
+
+TEST RESULTS
+Test | Expected handler/result | Observed result | Status | Evidence
+T1 | onMessage; valid title/image | onMessage; count 1; default changed
+   | to New campus event and promo image | PASS | evidence/T1_evidence.png
+T2 | Background notification tap -> onMessageOpenedApp and valid UI
+   | onMessageOpenedApp; count 2; matching title/image
+   | PASS | evidence/T2_evidence.png
+T3 | Notification-triggered cold start -> getInitialMessage and valid UI
+   | App removed from recents; process absent before send; notification tap
+   | launched getInitialMessage; new count 1; matching title/image
+   | PASS | evidence/T3_evidence.png
+T4 | onMessage; reject unsupported asset; preserve previous title/image
+   | onMessage; count 2; rejection diagnostic; New campus event and promo
+   | image unchanged; app remained running | PASS | evidence/T4_evidence.png
+
+EVIDENCE GUIDE
+T1: initial screen and foreground result.
+T2: previous foreground state and background notification-tap result.
+T3: delivered notification and cold-start result.
+T4: before (T3 result) and after rejection, demonstrating preservation.
+Original screenshots are also retained in evidence/.
+
+VALIDATION AND LIMITATIONS
+Source analysis: No issues found.
+Android :app:assembleDebug: BUILD SUCCESSFUL; APK installed successfully.
+Four real Firebase Console sends to one emulator were observed.
+No force-stop was used for T3, and no manual launcher start replaced the tap.
+No Dart/native source changed after the passing T1-T4 run.
+Delivery remains dependent on network, permission, Play services, platform,
+payload type, and app/device policy. No iOS or separate data-only background
+processing test is claimed. Repeated-message deduplication is proposed only.
+The assignment has not been submitted to the LMS by this assistant.

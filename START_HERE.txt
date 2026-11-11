@@ -1,0 +1,18 @@
+ACTIVITY 14 - READY FOR YOUR SUBMISSION
+
+1. Paste this repository URL into the LMS:
+https://github.com/ezizbagshiyev/mad-activity14-fcm
+
+2. Attach Bagshiyev_Eziz_Activity14_Reflection.txt.
+3. Attach evidence/T1_evidence.png, T2_evidence.png, T3_evidence.png,
+   and T4_evidence.png (or the archive if your instructor accepts archives).
+
+All four tests passed on the Pixel 7 Android 17 emulator.
+Screenshots and the reflection are included. Source code is in the repository.
+Nothing was submitted automatically.
+
+To rerun on this computer:
+cd "C:\Users\ezizb\Documents\Codex\2026-11-08\new-chat\incl14"
+flutter run -d emulator-5554
+
+See README.md for JDK/setup requirements and the existing app identifier.

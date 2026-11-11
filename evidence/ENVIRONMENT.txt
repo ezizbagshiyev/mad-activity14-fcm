@@ -1,0 +1,21 @@
+VERIFIED ENVIRONMENT AND RESULTS - November 10, 2026, America/New_York
+
+Pixel_7 Android 17 emulator, emulator-5554, with Google Play services.
+Notification permission: authorized, observed on-screen.
+Current installation token used for device-only Firebase Console tests.
+Source analysis: No issues found.
+Android app task :app:assembleDebug: BUILD SUCCESSFUL.
+APK installation: Success.
+T1: onMessage, count 1, expected title and promo image.
+T2: onMessageOpenedApp, count 2, expected title and promo image.
+T3: getInitialMessage, new count 1, expected title and promo image.
+T4: onMessage, count 2, rejection diagnostic, previous content preserved.
+
+Resolved setup issues: SDK cache write access, dependency downloads,
+Android SDK/build-tools mismatch, Java 25 versus Gradle compatibility,
+and Java/Kotlin bytecode-target mismatch. User's local run downloaded the
+missing libraries; the final app build completed using cached dependencies.
+Build uses JDK 21 with Java/Kotlin bytecode target 17 and Android SDK 36.
+
+No source changed after the observed passing run. No device tokens or private
+credentials are included. Original screenshots accompany four labeled composites.

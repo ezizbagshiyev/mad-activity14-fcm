@@ -1,0 +1,4 @@
+{
+  "notification": {"title": "Invalid update", "body": "Unsupported asset test"},
+  "data": {"action": "update_ui", "asset": "unknown"}
+}
